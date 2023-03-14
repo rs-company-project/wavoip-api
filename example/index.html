@@ -1,0 +1,53 @@
+<!doctype HTML>
+<html>
+
+<head>
+  <script type="text/javascript" src="../lib/rs-voip-api.js"></script>
+</head>
+
+<body>
+  <input type="text" id="whatsappid" placeholder="Exemplo: 5511973951769">
+  <button onclick="startCall()">Call Start</button>
+  <button onclick="endCall()">End Call</button>
+  <button onclick="acceptCall()">Accept Call</button>
+  <button onclick="rejectCall()">Reject Call</button>
+  <button onclick="mute();">Mute Call</button>
+  <button onclick="unMute();">Unmute Call</button>
+
+  <script>
+    const RSDevice = new RSVoip;
+    const RSWhatsapp = RSDevice.connect("7d6b5d48-4fee-4a8d-a8dd-02943594b6cd");
+
+    RSWhatsapp.socket.on('connect', () => {
+      console.log('Successfully connected!', RSWhatsapp);
+    });
+
+    var startCall = () => {
+      RSWhatsapp.callStart({
+        whatsappid: document.getElementById("whatsappid").value
+      });
+    }
+
+    var endCall = () => {
+      RSWhatsapp.endCall();
+    }
+
+    var acceptCall = () => {
+      RSWhatsapp.acceptCall();
+    }
+
+    var rejectCall = () => {
+      RSWhatsapp.rejectCall();
+    }
+
+    var mute = () => {
+      RSWhatsapp.mute();
+    }
+
+    var unMute = () => {
+      RSWhatsapp.unMute();
+    }
+  </script>
+</body>
+
+</html>

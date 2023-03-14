@@ -1,0 +1,75 @@
+{
+  "name": "rs-voip-api",
+  "version": "1.0.2",
+  "description": "RS Voip is a unique library with whatsapp voip features that control Whatsapp calls. With RS Voip you can integrate whatsapp calls in your software",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "build": "webpack",
+    "start": "webpack-dev-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rs-company-project/rs-voip-api.git"
+  },
+  "keywords": [
+    "rs company",
+    "company rs",
+    "rs voip",
+    "voip rs",
+    "rs",
+    "revolutionary system",
+    "whatsapp",
+    "whatsapp voip",
+    "voip",
+    "wavoip",
+    "ligações",
+    "ligações whatsapp",
+    "ligações do whatsapp",
+    "licacoes whatsapp",
+    "whatsapp licacoes",
+    "whatsapp licações",
+    "chamadas whatsapp",
+    "chamadas do whatsapp",
+    "whatsapp api",
+    "whatsapp pabx",
+    "pabx",
+    "webrtc",
+    "webrtc whatsapp",
+    "whatsapp whatsapp",
+    "ligação",
+    "whatsapp api",
+    "whatsapp calls",
+    "calls whatsapp"
+  ],
+  "author": "RS Company",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rs-company-project/rs-voip-api/issues"
+  },
+  "homepage": "https://github.com/rs-company-project/rs-voip-api#readme",
+  "dependencies": {
+    "axios": "^1.2.0",
+    "path": "^0.12.7",
+    "socket.io-client": "^4.6.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.3.4",
+    "@babel/plugin-proposal-class-properties": "^7.3.4",
+    "@babel/preset-env": "^7.3.4",
+    "babel-eslint": "^10.0.1",
+    "babel-jest": "^24.1.0",
+    "babel-loader": "^8.0.5",
+    "eslint": "^5.15.0",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-node": "^8.0.1",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "jest": "^24.1.0",
+    "prettier": "1.16.4",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.2.3",
+    "webpack-dev-server": "^3.2.1"
+  }
+}
