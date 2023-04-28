@@ -16,7 +16,7 @@ class Call {
               resolve(response);
             }
             else {
-              reject(response);
+              resolve(response);
             }
           }
           catch (error) {
