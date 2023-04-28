@@ -10,12 +10,17 @@ class Call {
   callStart({ whatsappid }) {
     return new Promise((resolve, reject) => {
       try {
-        this.Socket.emit("calls:start", whatsappid, (response) =>{
-          if(checkReponseResult(response)) {
-            resolve(response);
+        this.Socket.emit("calls:start", whatsappid, (response) => {
+          try {
+            if (checkReponseResult(response)) {
+              resolve(response);
+            }
+            else {
+              reject(response);
+            }
           }
-          else {
-            reject(response);
+          catch (error) {
+            reject(error);
           }
         });
       } catch (error) {
@@ -47,8 +52,8 @@ class Call {
     this.Microphone.stop();
 
     return new Promise((resolve, reject) => {
-      this.Socket.emit("calls:end", {}, (response) =>{
-        if(checkReponseResult(response)) {
+      this.Socket.emit("calls:end", {}, (response) => {
+        if (checkReponseResult(response)) {
           resolve(response);
         }
         else {
@@ -60,8 +65,8 @@ class Call {
 
   acceptCall() {
     return new Promise((resolve, reject) => {
-      this.Socket.emit("calls:accept", {}, (response) =>{
-        if(checkReponseResult(response)) {
+      this.Socket.emit("calls:accept", {}, (response) => {
+        if (checkReponseResult(response)) {
           resolve(response);
         }
         else {
@@ -73,8 +78,8 @@ class Call {
 
   rejectCall() {
     return new Promise((resolve, reject) => {
-      this.Socket.emit("calls:reject", {}, (response) =>{
-        if(checkReponseResult(response)) {
+      this.Socket.emit("calls:reject", {}, (response) => {
+        if (checkReponseResult(response)) {
           resolve(response);
         }
         else {
@@ -86,8 +91,8 @@ class Call {
 
   mute() {
     return new Promise((resolve, reject) => {
-      this.Socket.emit("calls:mute", {}, (response) =>{
-        if(checkReponseResult(response)) {
+      this.Socket.emit("calls:mute", {}, (response) => {
+        if (checkReponseResult(response)) {
           resolve(response);
         }
         else {
@@ -99,8 +104,8 @@ class Call {
 
   unMute() {
     return new Promise((resolve, reject) => {
-      this.Socket.emit("calls:unmute", {}, (response) =>{
-        if(checkReponseResult(response)) {
+      this.Socket.emit("calls:unmute", {}, (response) => {
+        if (checkReponseResult(response)) {
           resolve(response);
         }
         else {
