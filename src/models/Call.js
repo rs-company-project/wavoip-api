@@ -9,16 +9,18 @@ class Call {
 
   callStart({ whatsappid }) {
     return new Promise((resolve, reject) => {
-      // this.Microphone.start();
-      // this.Audio.start();
-      this.Socket.emit("calls:start", whatsappid, (response) =>{
-        if(checkReponseResult(response)) {
-          resolve(response);
-        }
-        else {
-          reject(response);
-        }
-      });
+      try {
+        this.Socket.emit("calls:start", whatsappid, (response) =>{
+          if(checkReponseResult(response)) {
+            resolve(response);
+          }
+          else {
+            reject(response);
+          }
+        });
+      } catch (error) {
+        reject(error);
+      }
     });
   }
 
