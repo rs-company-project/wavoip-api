@@ -35,7 +35,7 @@ class Audio {
     }
 
     if (this.audiobuffer.length === 0) {
-      console.error("[RSVOIP] - error empty buffer")
+      // console.error("[RSVOIP] - error empty buffer")
       setTimeout(() => {
         this.play();
       }, 1);

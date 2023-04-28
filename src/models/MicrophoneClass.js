@@ -53,7 +53,6 @@ class Microphone {
 
           myscriptnode.onaudioprocess = (AudioBuffer) => {
             if(!this.isRunning) {
-              console.error("microphone fechado")
               return;
             }
             

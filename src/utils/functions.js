@@ -4,7 +4,7 @@ export const checkReponseResult = (response) => {
         return false;
     }
 
-    if(response.type === "success") {
+    if(response?.type === "success") {
         return true;
     }
     else {
