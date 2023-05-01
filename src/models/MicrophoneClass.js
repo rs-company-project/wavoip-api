@@ -18,9 +18,11 @@ class Microphone {
     //   }
     // });
 
-    if (data?.event === 16 && data?.eventData?.call_state === 0) {
-      this.stop();
-    }
+    this.Socket.on("call_ev", (data) => {
+      if (data?.event === 16 && data?.eventData?.call_state === 0) {
+        this.stop();
+      }
+    })
   }
 
   async init() {
