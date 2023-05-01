@@ -9,14 +9,18 @@ class Microphone {
     this.isRunning = false;
     this.initied = false;
 
-    this.Socket.on("call_ev", (data) => {
-      if(data?.event === 16 && data?.eventData?.call_state === 6) {
-        this.start();
-      }
-      else if(data?.event === 16 && data?.eventData?.call_state === 0) {
-        this.stop();
-      }
-    });
+    // this.Socket.on("call_ev", (data) => {
+    //   if(data?.event === 16 && data?.eventData?.call_state === 6) {
+    //     this.start();
+    //   }
+    //   else if(data?.event === 16 && data?.eventData?.call_state === 0) {
+    //     this.stop();
+    //   }
+    // });
+
+    if (data?.event === 16 && data?.eventData?.call_state === 0) {
+      this.stop();
+    }
   }
 
   async init() {
@@ -28,7 +32,7 @@ class Microphone {
       this.mediaRecorder = await navigator.mediaDevices
         .getUserMedia(constraints)
         .then((stream) => {
-          if(this.initied) {
+          if (this.initied) {
             return;
           }
 
@@ -47,15 +51,15 @@ class Microphone {
           var bufferSize = 0;
           var myscriptnode = context.createScriptProcessor(bufferSize, 1, 1);
 
-          if(myscriptnode) {
+          if (myscriptnode) {
             this.initied = true;
           }
 
           myscriptnode.onaudioprocess = (AudioBuffer) => {
-            if(!this.isRunning) {
+            if (!this.isRunning) {
               return;
             }
-            
+
             var left = AudioBuffer.inputBuffer.getChannelData(0);
 
             var l = left.length;
@@ -71,6 +75,8 @@ class Microphone {
 
           mediastream.connect(myscriptnode);
           myscriptnode.connect(context.destination);
+
+          console.log(myscriptnode, "myscriptnode")
           // let mediaRecorder = new MediaRecorder(stream);
 
           // mediaRecorder.ondataavailable = (e) => {
