@@ -43,6 +43,9 @@ class RSVoip {
 
     return {
       socket: SocketInstance.socket,
+      microphoneStart: function(params) {
+        MicrophoneInstance.start();
+      },
       callStart: function(params) {
         CallModel.callStart(params);
       },
