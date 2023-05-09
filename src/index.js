@@ -43,7 +43,10 @@ class RSVoip {
 
     return {
       socket: SocketInstance.socket,
-      microphoneStart: function(params) {
+      audioStart: function() {
+        AudioInstance.start();
+      },
+      microphoneStart: function() {
         MicrophoneInstance.start();
       },
       callStart: function(params) {
