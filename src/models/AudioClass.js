@@ -19,11 +19,17 @@ class Audio {
       this.appendBuffer(buffer);
     });
 
+    // this.Socket.on("call_ev", (data) => {
+    //   if(data?.event === 16 && data?.eventData?.call_state === 6) {
+    //     this.start();
+    //   }
+    //   else if(data?.event === 16 && data?.eventData?.call_state === 0) {
+    //     this.stop();
+    //   }
+    // });
+
     this.Socket.on("call_ev", (data) => {
-      if(data?.event === 16 && data?.eventData?.call_state === 6) {
-        this.start();
-      }
-      else if(data?.event === 16 && data?.eventData?.call_state === 0) {
+      if (data?.event === 16 && data?.eventData?.call_state === 0) {
         this.stop();
       }
     });
