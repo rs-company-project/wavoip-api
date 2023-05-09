@@ -1,6 +1,6 @@
 {
   "name": "rs-voip-api",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "RS Voip is a unique library with whatsapp voip features that control Whatsapp calls. With RS Voip you can integrate whatsapp calls in your software",
   "main": "index.js",
   "scripts": {
