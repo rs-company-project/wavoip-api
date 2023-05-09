@@ -41,11 +41,11 @@ class Microphone {
           var context;
           if (window.AudioContext) {
             context = new AudioContext({
-              sampleRate: 46000
+              sampleRate: 16000
             });
           } else {
             context = new webkitAudioContext({
-              sampleRate: 46000
+              sampleRate: 16000
             });
           }
 
