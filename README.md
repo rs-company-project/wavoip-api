@@ -16,7 +16,7 @@ A Wavoip é uma biblioteca JavaScript inovadora que possibilita a integração f
 
 1. Instale a biblioteca em seu projeto:
    ```bash
-   npm install wavoip
+   npm install wavoip-api
 
 2. Siga a documentação para integrar a funcionalidade de chamada de áudio em seu aplicativo.
 
@@ -24,6 +24,7 @@ A Wavoip é uma biblioteca JavaScript inovadora que possibilita a integração f
 
 1. Instale a biblioteca em seu projeto:
    ```javascript
+    const Wavoip = require("wavoip-api");
     const WAV = new Wavoip;
     const whatsapp_instance = WAV.connect("my_token");
 
