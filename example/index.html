@@ -16,8 +16,9 @@
 
   <script>
     const RSDevice = new RSVoip;
-    const RSWhatsapp = RSDevice.connect("7d6b5d48-4fee-4a8d-a8dd-02943594b6cd");
+    const RSWhatsapp = RSDevice.connect("a4d7af6b-0342-4ef4-811e-bf50dcecd2f1");
 
+    window.RSWhatsapp = RSWhatsapp;
     RSWhatsapp.socket.on('connect', () => {
       console.log('Successfully connected!', RSWhatsapp);
     });

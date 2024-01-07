@@ -41,17 +41,22 @@ class Microphone {
           var context;
           if (window.AudioContext) {
             context = new AudioContext({
-              sampleRate: 16000
+              sampleRate: 48000,
+              numberOfChannels: 2,
+              length: 1920,
             });
           } else {
             context = new webkitAudioContext({
-              sampleRate: 16000
+              sampleRate: 48000 ,
+              numberOfChannels: 2,
+              length: 1920,
             });
           }
 
+
           var mediastream = context.createMediaStreamSource(stream);
-          var bufferSize = 0;
-          var myscriptnode = context.createScriptProcessor(bufferSize, 1, 1);
+          var bufferSize = 1024;
+          var myscriptnode = context.createScriptProcessor(bufferSize, 2, 2);
 
           if (myscriptnode) {
             this.initied = true;
@@ -71,28 +76,12 @@ class Microphone {
               buf[l] = left[l] * 0xFFFF;    //convert to 16 bit
             }
 
-            // console.log(buf.buffer, "buf.buffer");
             this.Socket.emit("microphone_buffer", buf.buffer);
           };
 
           mediastream.connect(myscriptnode);
           myscriptnode.connect(context.destination);
-
-          console.log(myscriptnode, "myscriptnode")
-          // let mediaRecorder = new MediaRecorder(stream);
-
-          // mediaRecorder.ondataavailable = (e) => {
-          //   console.log(e.data);
-          //   console.log(e);
-          //   this.Socket.emit("microphone_buffer", e.data);
-          // };
-
-          // mediaRecorder.onstop = (e) => {
-          //   // Mic is stoped
-          //   // console.log("stoped micro");
-          // };
-
-          // return mediaRecorder;
+     
           return context;
         })
         .catch((error) => {

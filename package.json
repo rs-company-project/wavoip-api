@@ -1,11 +1,11 @@
 {
-  "name": "rs-voip-api",
-  "version": "1.0.14",
-  "description": "RS Voip is a unique library with whatsapp voip features that control Whatsapp calls. With RS Voip you can integrate whatsapp calls in your software",
+  "name": "wavoip-api",
+  "version": "1.0.0",
+  "description": "Biblioteca JavaScript para facilitar chamadas de áudio via WhatsApp em projetos web.",
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "build": "webpack",
+    "build": "set NODE_OPTIONS=--openssl-legacy-provider && webpack",
     "start": "webpack-dev-server"
   },
   "repository": {
@@ -13,12 +13,11 @@
     "url": "git+https://github.com/rs-company-project/rs-voip-api.git"
   },
   "keywords": [
-    "rs company",
-    "company rs",
-    "rs voip",
-    "voip rs",
-    "rs",
-    "revolutionary system",
+    "wavoip",
+    "wav",
+    "wa voip",
+    "voip wav",
+    "wavoip",
     "whatsapp",
     "whatsapp voip",
     "voip",
@@ -42,7 +41,7 @@
     "whatsapp calls",
     "calls whatsapp"
   ],
-  "author": "RS Company",
+  "author": "wavoip",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/rs-company-project/rs-voip-api/issues"
@@ -51,7 +50,8 @@
   "dependencies": {
     "axios": "^1.2.0",
     "path": "^0.12.7",
-    "socket.io-client": "^4.6.0"
+    "socket.io-client": "^4.6.0",
+    "socket.io-p2p": "^2.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.3.4",
@@ -69,7 +69,7 @@
     "jest": "^24.1.0",
     "prettier": "1.16.4",
     "webpack": "^4.29.6",
-    "webpack-cli": "^3.2.3",
+    "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.2.1"
   }
 }

@@ -2,6 +2,7 @@ import Socket from "./websocket/index.js";
 import Call from "./models/Call.js";
 import Microphone from "./models/MicrophoneClass.js";
 import Audio from "./models/AudioClass";
+import Device from "./models/Device.js";
 
 class RSVoip {
   constructor() {
@@ -12,14 +13,43 @@ class RSVoip {
     const SocketInstance = new Socket(device_token);
     const MicrophoneInstance = new Microphone(SocketInstance.socket);
     const AudioInstance = new Audio(SocketInstance.socket);
-
     const CallModel = new Call(SocketInstance.socket, MicrophoneInstance, AudioInstance);
+    const DeviceModel = new Device(SocketInstance.socket);
 
-    // SocketInstance.socket.on('connect', () => {
-    //   console.log(Microphone);
+    let currentCallState = null;
+    SocketInstance.socket.on('connect', () => {
+      console.log('Successfully connected!');
 
-    //   console.log('Successfully connected!');
-    // });
+      if(currentCallState === "accept") {
+        AudioInstance.start();
+        MicrophoneInstance.start();
+      }
+    });
+
+    SocketInstance. socket.on("disconnect", (reason) => {
+      AudioInstance.stop();
+      MicrophoneInstance.stop();
+    });
+
+   
+
+    SocketInstance.socket.on('signaling', (data) => {
+      if(data.tag) {
+        currentCallState = data.tag;
+      }
+      currentCallState = data.tag;
+
+      if(data.tag === "accept") {
+        AudioInstance.start();
+        MicrophoneInstance.start();
+      }
+
+      if(data.tag === "terminate") {
+        AudioInstance.stop();
+        MicrophoneInstance.stop();
+      }
+    });
+    
 
     // SocketInstance.socket.io.on("error", (error) => {
     //   console.log('Error connected!', error);
@@ -43,6 +73,12 @@ class RSVoip {
 
     return {
       socket: SocketInstance.socket,
+      getCurrentDeviceStatus: function() {
+        return DeviceModel.getCurrentDeviceStatus()
+      },
+      getCurrentQRCode: function() {
+        return DeviceModel.getCurrentQRCode()
+      },
       audioStart: function() {
         AudioInstance.start();
       },
