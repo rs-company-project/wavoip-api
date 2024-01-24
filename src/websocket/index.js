@@ -6,15 +6,29 @@ class Socket {
   constructor(device_token) {
     this.device_token = device_token;
     this.socket = null;
+    this.socket_audio_transport;
 
     this.start();
   }
 
   start() {
     this.socket = io(baseURL, {
-      // transports: ['websocket'],
-      // withCredentials: true,
+      transports: ['websocket'],
       path: `/${this.device_token}`
+    });
+
+    this.socket.on("audio_transport:create", ({ room, sampleRate }) => {
+      console.info("[*] creating audio transport");
+
+      this.socket_audio_transport = io(`${baseURL}/call-${room}`, {
+        transports: ['websocket'],
+        path: `/${this.device_token}`,
+        forceNew: true
+      });
+    });
+
+    this.socket.on("audio_transport:terminate", ({ room }) => {
+      console.info("[*] terminating audio transport");
     });
   }
 }

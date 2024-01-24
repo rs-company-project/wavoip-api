@@ -23,14 +23,6 @@ function mergeUint32Arrays(...arrays) {
   return { mergedArray, validArrays: validArrays.length };
 }
 
-function removeElementsBelowIndexInPlace(array, minIndex) {
-  let i = 0;
-  while (i < array.length && i < minIndex) {
-    array.shift(); // Remove o primeiro elemento do array
-  }
-}
-
-
 class Audio {
   audiobuffer = [];
   isRunning = false;
@@ -40,6 +32,7 @@ class Audio {
   counter_packet = 0;
   packet_quarentine = [];
   min = 0;
+  
   constructor(Socket) {
     this.Socket = Socket;
     this.audiobuffer = [];
@@ -51,37 +44,22 @@ class Audio {
     this.counter_packet = 0;
     this.packet_quarentine = [];
     this.min = 0;
-
-    this.Socket.on("audio_buffer", (buffer) => {
-      this.appendBuffer(buffer);
-    });
-
-
-    // this.Socket.on("call_ev", (data) => {
-    //   if(data?.event === 16 && data?.eventData?.call_state === 6) {
-    //     this.start();
-    //   }
-    //   else if(data?.event === 16 && data?.eventData?.call_state === 0) {
-    //     this.stop();
-    //   }
-    // });
-
-    this.Socket.on("call_ev", (data) => {
-      if (data?.event === 16 && data?.eventData?.call_state === 0) {
-        this.stop();
-      }
-    });
+    this.sampleRate = 48000;
+    this.call_id;
   }
 
-  play() {
+  play(room) {
     if (!this.isRunning) {
       return;
     }
 
+    if(this.call_id != room) {
+      return;
+    }
+
     if (this.audiobuffer.length === 0) {
-      // console.error("[RSVOIP] - error empty buffer")
       setTimeout(() => {
-        this.play();
+        this.play(room);
       }, 1);
       return;
     }
@@ -89,27 +67,25 @@ class Audio {
     try {
       if (this.subcounter < this.audiobuffer.length) {
         // Criar um novo array para mesclar
-        let {mergedArray: audiobuffer,  validArrays} = mergeUint32Arrays(...this.audiobuffer.slice(this.min, this.min + 5));
+        let {mergedArray: audiobuffer, validArrays} = mergeUint32Arrays(...this.audiobuffer.slice(this.min, this.min + 5));
         this.min = this.subcounter;
-        var frameCount = audiobuffer.length;
 
-        var myAudioBuffer = this.audioCtx.createBuffer(this.channels, frameCount, 24000);
+        if(audiobuffer){
+          var frameCount = audiobuffer.length;
 
-        for (var channel = 0; channel < this.channels; channel++) {
-          var nowBuffering = myAudioBuffer.getChannelData(channel);
-          for (var i = 0; i < frameCount; i++) {
-            // audio needs to be in [-1.0; 1.0]
-            var word = audiobuffer[i];
-            nowBuffering[i] = ((word + 32768) % 65536 - 32768) / 32768.0;
-            // nowBuffering[i] = Math.sin((i%168)/168.0*Math.PI*2);
+          var myAudioBuffer = this.audioCtx.createBuffer(this.channels, frameCount, (this.sampleRate / 2) ?? 16000);
+  
+          for (var channel = 0; channel < this.channels; channel++) {
+            var nowBuffering = myAudioBuffer.getChannelData(channel);
+            for (var i = 0; i < frameCount; i++) {
+  
+              // audio needs to be in [-1.0; 1.0]
+              var word = audiobuffer[i];
+              nowBuffering[i] = ((word + 32768) % 65536 - 32768) / 32768.0;
+            }
           }
-
-          // for (var i = 0; i < 100; i++) {
-          //   nowBuffering[i] = nowBuffering[i] * i / 100;//fade in
-          //   nowBuffering[frameCount - i - 1] = nowBuffering[frameCount - i - 1] * i / 50;//fade out
-          // }
         }
-
+        
         if (this.subcounter < (this.audiobuffer.length - 1)) {
           this.subcounter = this.audiobuffer.length - 1;
         }
@@ -120,28 +96,38 @@ class Audio {
         var source = this.audioCtx.createBufferSource();
         source.buffer = myAudioBuffer;
         source.connect(this.audioCtx.destination);
-        // source.onended = play;
         source.start();
 
-        this.play();
+        this.play(room);
       }
       else {
         setTimeout(() => {
-          this.play();
+          this.play(room);
         }, 1);
       }
     }
     catch (error) {
-      console.error(error);
+      console.error(error, this.sampleRate);
     }
   }
 
-  start() {
+  start(sampleRate, room) {
+    if (!this.isRunning) {
+      this.stop();
+    }
+  
+    console.info("[*] - Audio stream started with samplerate", sampleRate);
     this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     this.audiobuffer = [];
     this.subcounter = 0;
     this.isRunning = true;
-    this.play();
+    this.sampleRate = sampleRate ?? this.sampleRate;
+    this.call_id = room;
+    this.play(room);
+    
+    this.Socket.socket_audio_transport.on("audio_buffer", (buffer) => {
+      this.appendBuffer(buffer);
+    });
   }
 
   appendBuffer(msg) {
@@ -151,10 +137,13 @@ class Audio {
   };
 
   stop() {
+    console.info("[*] - Audio stream stopped");
     this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     this.audiobuffer = [];
     this.subcounter = 0;
     this.isRunning = false;
+
+    this.Socket?.socket_audio_transport?.off("audio_buffer");
   }
 }
 

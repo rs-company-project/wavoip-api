@@ -1,89 +1,56 @@
 import Socket from "./websocket/index.js";
 import Call from "./models/Call.js";
-import Microphone from "./models/MicrophoneClass.js";
 import Audio from "./models/AudioClass";
 import Device from "./models/Device.js";
+import Microphone from "./models/Microphone.js";
 
-class RSVoip {
+class WAVoip {
   constructor() {
-
+    this.Recorder = Recorder;
   }
 
   connect = (device_token) => {
     const SocketInstance = new Socket(device_token);
-    const MicrophoneInstance = new Microphone(SocketInstance.socket);
-    const AudioInstance = new Audio(SocketInstance.socket);
-    const CallModel = new Call(SocketInstance.socket, MicrophoneInstance, AudioInstance);
+    const AudioInstance = new Audio(SocketInstance);
+    const CallModel = new Call(SocketInstance.socket);
     const DeviceModel = new Device(SocketInstance.socket);
 
     let currentCallState = null;
+
     SocketInstance.socket.on('connect', () => {
       console.log('Successfully connected!');
-
-      if(currentCallState === "accept") {
-        AudioInstance.start();
-        MicrophoneInstance.start();
-      }
     });
 
-    SocketInstance. socket.on("disconnect", (reason) => {
-      AudioInstance.stop();
-      MicrophoneInstance.stop();
+    SocketInstance.socket.on("disconnect", (reason) => {
     });
-
-   
 
     SocketInstance.socket.on('signaling', (data) => {
       if(data.tag) {
         currentCallState = data.tag;
       }
       currentCallState = data.tag;
+    });
 
-      if(data.tag === "accept") {
-        AudioInstance.start();
-        MicrophoneInstance.start();
-      }
+    SocketInstance.socket.on("audio_transport:create", ({ room, sampleRate }) => {
+      AudioInstance.start(sampleRate, room);
 
-      if(data.tag === "terminate") {
-        AudioInstance.stop();
-        MicrophoneInstance.stop();
-      }
+      Microphone.init(SocketInstance, sampleRate);
+      Microphone.start();
     });
     
-
-    // SocketInstance.socket.io.on("error", (error) => {
-    //   console.log('Error connected!', error);
-    // });
-
-    // SocketInstance.socket.io.on("reconnect", (attempt) => {
-    //   console.log('Error reconnect_attempt!', attempt);
-    // });
-
-    // SocketInstance.socket.io.on("reconnect_attempt", (attempt) => {
-    //   console.log('Error reconnect_attempt!', attempt);
-    // });
-
-    // SocketInstance.socket.io.on("reconnect_error", (error) => {
-    //   console.log('Error reconnect_attempt!', error);
-    // });
-
-    // SocketInstance.socket.io.on("reconnect_failed", (attempt) => {
-    //   console.log('Error reconnect_attempt!', attempt);
-    // });
+    SocketInstance.socket.on("audio_transport:terminate", ({ room }) => {
+      AudioInstance.stop();
+      Microphone.stop();
+    });
 
     return {
+      Recorder: Recorder,
       socket: SocketInstance.socket,
       getCurrentDeviceStatus: function() {
         return DeviceModel.getCurrentDeviceStatus()
       },
       getCurrentQRCode: function() {
         return DeviceModel.getCurrentQRCode()
-      },
-      audioStart: function() {
-        AudioInstance.start();
-      },
-      microphoneStart: function() {
-        MicrophoneInstance.start();
       },
       callStart: function(params) {
         CallModel.callStart(params);
@@ -107,4 +74,4 @@ class RSVoip {
   }
 }
 
-export default RSVoip;
+export default WAVoip;

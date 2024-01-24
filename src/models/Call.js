@@ -1,10 +1,8 @@
 import { checkReponseResult } from "../utils/functions.js";
 
 class Call {
-  constructor(Socket, Microphone, Audio) {
+  constructor(Socket) {
     this.Socket = Socket;
-    this.Microphone = Microphone;
-    this.Audio = Audio;
   }
 
   callStart({ whatsappid }) {
@@ -49,8 +47,6 @@ class Call {
   // }
 
   endCall() {
-    this.Microphone.stop();
-
     return new Promise((resolve, reject) => {
       this.Socket.emit("calls:end", {}, (response) => {
         if (checkReponseResult(response)) {
