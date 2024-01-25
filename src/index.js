@@ -6,7 +6,6 @@ import Microphone from "./models/Microphone.js";
 
 class WAVoip {
   constructor() {
-    this.Recorder = Recorder;
   }
 
   connect = (device_token) => {
@@ -44,7 +43,6 @@ class WAVoip {
     });
 
     return {
-      Recorder: Recorder,
       socket: SocketInstance.socket,
       getCurrentDeviceStatus: function() {
         return DeviceModel.getCurrentDeviceStatus()
