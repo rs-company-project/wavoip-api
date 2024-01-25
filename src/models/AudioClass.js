@@ -67,7 +67,7 @@ class Audio {
     try {
       if (this.subcounter < this.audiobuffer.length) {
         // Criar um novo array para mesclar
-        let {mergedArray: audiobuffer, validArrays} = mergeUint32Arrays(...this.audiobuffer.slice(this.min, this.min + 5));
+        let { mergedArray: audiobuffer, validArrays } = mergeUint32Arrays(...this.audiobuffer.slice(this.min, this.audiobuffer.length));
         this.min = this.subcounter;
 
         if(audiobuffer){
@@ -90,7 +90,7 @@ class Audio {
           this.subcounter = this.audiobuffer.length - 1;
         }
         else {
-          this.subcounter += 5;
+          this.subcounter += validArrays.length;
         }
 
         var source = this.audioCtx.createBufferSource();

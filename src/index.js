@@ -51,22 +51,22 @@ class WAVoip {
         return DeviceModel.getCurrentQRCode()
       },
       callStart: function(params) {
-        CallModel.callStart(params);
+        return CallModel.callStart(params);
       },
       endCall: () => {
-        CallModel.endCall();
+        return CallModel.endCall();
       },
       acceptCall: () => {
-        CallModel.acceptCall();
+        return CallModel.acceptCall();
       },
       rejectCall: () => {
-        CallModel.rejectCall();
+        return CallModel.rejectCall();
       },
       mute: () => {
-        CallModel.mute();
+        return CallModel.mute();
       },
       unMute: () => {
-        CallModel.unMute();
+        return CallModel.unMute();
       },
     }
   }
