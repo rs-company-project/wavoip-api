@@ -1,6 +1,6 @@
 import Socket from "./websocket/index.js";
 import Call from "./models/Call.js";
-import Audio from "./models/AudioClass";
+import Audio from "./models/AudioClass.js";
 import Device from "./models/Device.js";
 import Microphone from "./models/Microphone.js";
 
