@@ -16,6 +16,15 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
       },
+      {
+        test: /AudioWorklet\.js$/,
+        use: [
+          {
+            loader: 'worklet-loader',
+            options: { name: 'AudioWorklet.js' }
+          },
+        ],
+      },
     ],
   },
   devServer: {

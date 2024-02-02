@@ -1,7 +1,6 @@
 import { io } from "socket.io-client";
 
 import { baseURL } from "../config";
-
 class Socket {
   constructor(device_token) {
     this.device_token = device_token;
@@ -14,15 +13,17 @@ class Socket {
   start() {
     this.socket = io(baseURL, {
       transports: ['websocket'],
-      path: `/${this.device_token}`
+      path: `/${this.device_token}/websocket`
     });
 
     this.socket.on("audio_transport:create", ({ room, sampleRate }) => {
       console.info("[*] creating audio transport");
 
+
+      // player.stop();
       this.socket_audio_transport = io(`${baseURL}/call-${room}`, {
         transports: ['websocket'],
-        path: `/${this.device_token}`,
+        path: `/${this.device_token}/websocket`,
         forceNew: true
       });
     });

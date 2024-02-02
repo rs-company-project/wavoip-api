@@ -14,8 +14,8 @@ class WAVoip {
     const CallModel = new Call(SocketInstance.socket);
     const DeviceModel = new Device(SocketInstance.socket);
 
-    let currentCallState = null;
-
+    let currentCallState;
+    
     SocketInstance.socket.on('connect', () => {
       console.log('Successfully connected!');
     });
