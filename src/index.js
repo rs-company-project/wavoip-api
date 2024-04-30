@@ -31,9 +31,9 @@ class WAVoip {
     });
 
     SocketInstance.socket.on("audio_transport:create", ({ room, sampleRate }) => {
-      AudioInstance.start(sampleRate, room);
+      AudioInstance.start(16000, room);
 
-      Microphone.init(SocketInstance, sampleRate);
+      Microphone.init(SocketInstance, 16000);
       Microphone.start();
     });
     

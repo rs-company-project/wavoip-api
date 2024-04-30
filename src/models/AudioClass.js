@@ -10,6 +10,17 @@ class Audio {
   }
 
   start(sampleRate) {
+    console.log("AUDIO STARTED", sampleRate)
+
+    this.Socket.socket_audio_transport.on("audio_buffer", (buffer) => {
+      console.log("audio")
+      let raw = new Uint8Array(buffer);			
+    
+      workletStream?.aw?.port?.postMessage({
+        buffer: raw
+      });
+    });
+
     let workletStream = new AudioWorkletStream({ 
       sampleRate: sampleRate,
       latencyHint: 0,
@@ -21,14 +32,6 @@ class Audio {
           offset: 0
         },
       },
-    });
-
-    this.Socket.socket_audio_transport.on("audio_buffer", (buffer) => {
-      let raw = new Uint8Array(buffer);			
-    
-      workletStream?.aw?.port?.postMessage({
-        buffer: raw
-      });
     });
   }
 
