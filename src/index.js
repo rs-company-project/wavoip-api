@@ -1,43 +1,33 @@
-import Socket from "./websocket/index.js";
-import Call from "./models/Call.js";
-import Audio from "./models/AudioClass.js";
-import Device from "./models/Device.js";
-import Microphone from "./models/Microphone.js";
+import Socket from './websocket/index.js';
+import Call from './models/Call.js';
+import Audio from './models/AudioClass.js';
+import Device from './models/Device.js';
+import Microphone from './models/Microphone.js';
 
-class WAVoip {
-  constructor() {
-  }
-
-  connect = (device_token) => {
-    const SocketInstance = new Socket(device_token);
+class Wavoip {
+  connect = deviceToken => {
+    const SocketInstance = new Socket(deviceToken);
     const AudioInstance = new Audio(SocketInstance);
     const CallModel = new Call(SocketInstance.socket);
     const DeviceModel = new Device(SocketInstance.socket);
 
-    let currentCallState;
-    
-    SocketInstance.socket.on('connect', () => {
-      console.log('Successfully connected!');
-    });
+    SocketInstance.socket.on('connect', () => {});
 
-    SocketInstance.socket.on("disconnect", (reason) => {
-    });
+    SocketInstance.socket.on('disconnect', reason => {});
 
-    SocketInstance.socket.on('signaling', (data) => {
-      if(data.tag) {
-        currentCallState = data.tag;
+    SocketInstance.socket.on('signaling', data => {});
+
+    SocketInstance.socket.on(
+      'audio_transport:create',
+      ({ room, sampleRate }) => {
+        AudioInstance.start(16000, room);
+
+        Microphone.init(SocketInstance, 16000);
+        Microphone.start();
       }
-      currentCallState = data.tag;
-    });
+    );
 
-    SocketInstance.socket.on("audio_transport:create", ({ room, sampleRate }) => {
-      AudioInstance.start(16000, room);
-
-      Microphone.init(SocketInstance, 16000);
-      Microphone.start();
-    });
-    
-    SocketInstance.socket.on("audio_transport:terminate", ({ room }) => {
+    SocketInstance.socket.on('audio_transport:terminate', ({ room }) => {
       AudioInstance.stop();
       Microphone.stop();
     });
@@ -45,10 +35,10 @@ class WAVoip {
     return {
       socket: SocketInstance.socket,
       getCurrentDeviceStatus: function() {
-        return DeviceModel.getCurrentDeviceStatus()
+        return DeviceModel.getCurrentDeviceStatus();
       },
       getCurrentQRCode: function() {
-        return DeviceModel.getCurrentQRCode()
+        return DeviceModel.getCurrentQRCode();
       },
       callStart: function(params) {
         return CallModel.callStart(params);
@@ -68,8 +58,8 @@ class WAVoip {
       unMute: () => {
         return CallModel.unMute();
       },
-    }
-  }
+    };
+  };
 }
 
-export default WAVoip;
+export default Wavoip;

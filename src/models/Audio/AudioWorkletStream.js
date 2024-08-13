@@ -1,4 +1,4 @@
-import noiseGeneratorUrl from "./AudioWorklet.js";
+import noiseGeneratorUrl from './AudioWorklet.js';
 
 class AudioWorkletStream {
   aw;
@@ -8,19 +8,18 @@ class AudioWorkletStream {
     numberOfChannels = 1,
     latencyHint = 0,
     workletOptions = {},
-  } = {
-  }) {
+  } = {}) {
     this.mediaStreamTrack = new Promise(async resolve => {
       const ac = new AudioContext({
         sampleRate,
         numberOfChannels,
         latencyHint,
         channelCount: 1,
-        numberOfOutputs: 1
+        numberOfOutputs: 1,
       });
 
       await ac.suspend();
-      ac.onstatechange = (ev) => {
+      ac.onstatechange = ev => {
         // console.log(ev, "ac.onstatechange");
       };
 

@@ -44,12 +44,12 @@ class AudioDataWorkletStream extends AudioWorkletProcessor {
     for (let i = 0; i < uint16.length; i++) {
       const int = uint16[i];
       // If the high bit is on, then it is a negative number, and actually counts backwards.
-      const float = int >= 0x8000 ? - (0x10000 - int) / 0x8000 : int / 0x7fff;
+      const float = int >= 0x8000 ? -(0x10000 - int) / 0x8000 : int / 0x7fff;
       // interleave
-  
+
       channels[0][i] = float;
     }
-  
+
     // Retorna true para indicar que o processamento foi bem-sucedido.
     return true;
   }

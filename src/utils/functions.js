@@ -1,13 +1,11 @@
-export const checkReponseResult = (response) => {
-    if(typeof response !== "object") {
-        console.error("[CHECKRESPONSE] - Resposta inesperada do servidor", response);
-        return false;
-    }
+export const checkResponseResult = response => {
+  if (typeof response !== 'object') {
+    return false;
+  }
 
-    if(response?.type === "success") {
-        return true;
-    }
-    else {
-        return false;
-    }
-}
+  if (response?.type === 'success') {
+    return true;
+  } else {
+    return false;
+  }
+};

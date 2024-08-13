@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <script type="text/javascript" src="../lib/rs-voip-api.js"></script>
+  <script type="text/javascript" src="../lib/index.js"></script>
 </head>
 
 <body>
@@ -15,42 +15,40 @@
   <button onclick="unMute();">Unmute Call</button>
 
   <script>
-    const RSDevice = new RSVoip;
-    const RSWhatsapp = RSDevice.connect("2c9abc0e-40e7-45d8-baad-9fc3a5bc72ce");
-    // const RSWhatsapp = RSDevice.connect("whatsapp_dev_token");
+    const device = new Wavoip;
+    const wavoipInstance = device.connect("b8018d84-dfed-45a0-9513-1877596ac8c6");
     
 
-    window.RSWhatsapp = RSWhatsapp;
-    RSWhatsapp.socket.on('connect', () => {
-      console.log('Successfully connected!', RSWhatsapp);
+    window.wavoipInstance = wavoipInstance;
+    wavoipInstance.socket.on('connect', () => {
+      // console.log('Successfully connected!', wavoipInstance);
     });
 
     var startCall = () => {
-      RSWhatsapp.callStart({
+      wavoipInstance.callStart({
         whatsappid: document.getElementById("whatsappid").value
       });
     }
 
     var endCall = () => {
-      RSWhatsapp.endCall();
+      wavoipInstance.endCall();
     }
 
     var acceptCall = () => {
-      RSWhatsapp.acceptCall();
+      wavoipInstance.acceptCall();
     }
 
     var rejectCall = () => {
-      RSWhatsapp.rejectCall();
+      wavoipInstance.rejectCall();
     }
 
     var mute = () => {
-      RSWhatsapp.mute();
+      wavoipInstance.mute();
     }
 
     var unMute = () => {
-      RSWhatsapp.unMute();
+      wavoipInstance.unMute();
     }
   </script>
 </body>
-
 </html>

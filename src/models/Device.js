@@ -1,8 +1,3 @@
-import { checkReponseResult } from "../utils/functions.js";
-import axios from "axios";
-import { baseURL } from "../config";
-
-
 class Device {
   qrcode;
   device_status;
@@ -12,11 +7,11 @@ class Device {
     this.qrcode;
     this.device_status;
 
-    this.Socket.on("qrcode", (qrcode) => {
+    this.Socket.on('qrcode', qrcode => {
       this.qrcode = qrcode;
     });
 
-    this.Socket.on("device_status", (device_status) => {
+    this.Socket.on('device_status', device_status => {
       this.device_status = device_status;
     });
   }
@@ -24,31 +19,29 @@ class Device {
   getCurrentQRCode() {
     return new Promise((resolve, reject) => {
       try {
-        this.Socket.emit("whatsapp:qrcode", (qrcode) => {
+        this.Socket.emit('whatsapp:qrcode', qrcode => {
           this.qrcode = qrcode;
           resolve(qrcode);
-        })
-
+        });
       } catch (error) {
-        console.error("Error to get current qrcode", error);
-        reject(error)
+        console.error('Error to get current qrcode', error);
+        reject(error);
       }
-    })
+    });
   }
 
   getCurrentDeviceStatus() {
     return new Promise((resolve, reject) => {
       try {
-        this.Socket.emit("whatsapp:device_status", (device_status) => {
+        this.Socket.emit('whatsapp:device_status', device_status => {
           this.device_status = device_status;
           resolve(device_status);
-        })
-
+        });
       } catch (error) {
-        console.error("Error to get current device status", error);
+        console.error('Error to get current device status', error);
         reject(error);
       }
-    })
+    });
   }
 }
 

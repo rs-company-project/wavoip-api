@@ -5,9 +5,9 @@ module.exports = {
   entry: './index.js',
   output: {
     path: path.join(__dirname, 'lib'),
-    filename: 'rs-voip-api.js',
+    filename: 'index.js',
     libraryTarget: 'umd',
-    library: 'RSVoip'
+    library: 'Wavoip'
   },
   module: {
     rules: [
@@ -21,10 +21,10 @@ module.exports = {
         use: [
           {
             loader: 'worklet-loader',
-            options: { name: 'AudioWorklet.js' }
+            options: { name: 'AudioWorklet.js', inline: true  }
           },
         ],
-      },
+      }
     ],
   },
   devServer: {
